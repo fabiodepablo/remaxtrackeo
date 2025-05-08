@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>MiApp – Gestión de Usuarios</title>
+
+  <!-- Montserrat -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <!-- Bootstrap Icons -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --rmax-blue:  #0058a3;
+      --rmax-red:   #ED1C24;
+      --rmax-white: #FFFFFF;
+      --rmax-light: #F2F2F2;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%; margin:0;
+      font-family:'Montserrat',sans-serif;
+      background-color:var(--rmax-light);
+    }
+    .navbar {
+      background:var(--rmax-white);
+      border-bottom:.25rem solid var(--rmax-red);
+    }
+    .navbar-brand { color:var(--rmax-blue)!important; font-weight:700; }
+    .nav-link { color:#333!important; font-weight:500; }
+    .nav-link.active,.nav-link:hover { color:var(--rmax-blue)!important; }
+    #logoutBtn {
+      border:.12rem solid var(--rmax-red);
+      color:var(--rmax-red);
+      font-weight:500;
+      transition:background .3s,color .3s;
+    }
+    #logoutBtn:hover {
+      background:var(--rmax-red);
+      color:var(--rmax-white);
+    }
+    main.container { padding:2rem 1rem; }
+    .page-title { color:var(--rmax-blue); font-weight:600; }
+    .btn-create {
+      background:var(--rmax-red); border:none;
+      color:var(--rmax-white);
+      text-transform:uppercase;
+      font-weight:600;
+      padding:.5rem 1rem;
+      border-radius:.5rem;
+      transition:background .3s,transform .2s;
+    }
+    .btn-create:hover {
+      background:var(--rmax-blue);
+      transform:translateY(-2px);
+    }
+    .table-card {
+      background:var(--rmax-white);
+      border-top:.5rem solid var(--rmax-blue);
+      border-bottom:.5rem solid var(--rmax-red);
+      border-radius:.75rem;
+      box-shadow:0 .5rem 1rem rgba(0,0,0,0.1);
+      margin-top:1rem;
+      padding:1rem;
+    }
+    .table-card table { width:100%; border-collapse:collapse; }
+    .table-card th, .table-card td {
+      padding:.5rem .75rem;
+      border-bottom:1px solid #e0e0e0;
+      text-align:left;
+    }
+    .table-card th {
+      background:var(--rmax-blue);
+      color:var(--rmax-white);
+      font-weight:600;
+    }
+    .table-card tbody tr:hover {
+      background:rgba(0,88,163,0.05);
+    }
+    /* Alineamos el ojo dentro de la celda */
+    .password-cell { white-space: nowrap; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="/dashboard.html">MiApp</a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="/dashboard.html">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/users.html">Usuarios</a></li>
+        <li class="nav-item"><a class="nav-link" href="/objectives.html">Objetivos</a></li>
+        <li class="nav-item"><a class="nav-link" href="/trackeoMensual.html">Trackeo M.</a></li>
+        <li class="nav-item"><a class="nav-link" href="/trackeoAnual.html">Trackeo A.</a></li>
+        <li class="nav-item"><a class="nav-link" href="/trackeoPropiedades.html">Propiedades</a></li>
+        <li class="nav-item"><a class="nav-link" href="/trackeoFactores.html">Factores</a></li>
+      </ul>
+      <button id="logoutBtn" class="btn btn-outline-danger">Cerrar sesión</button>
+    </div>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h3 page-title">Gestión de Usuarios</h1>
+      <button id="btnNew" class="btn-create">+ Crear Usuario</button>
+    </div>
+    <div id="listContainer" class="table-card">
+      <!-- se inyecta la tabla con JS -->
+    </div>
+  </main>
+
+  <!-- Modal Crear/Editar -->
+  <div class="modal fade" id="userModal" tabindex="-1">
+    <div class="modal-dialog">
+      <form class="modal-content" id="userForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">Crear Usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="userId" name="id"/>
+
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" required/>
+          </div>
+          <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido</label>
+            <input type="text" class="form-control" id="apellido" name="apellido" required/>
+          </div>
+          <div class="mb-3">
+            <label for="username" class="form-label">Usuario</label>
+            <input type="text" class="form-control" id="username" name="username" required/>
+          </div>
+          <div class="mb-3">
+            <label for="mail" class="form-label">Mail</label>
+            <input type="email" class="form-control" id="mail" name="mail" required/>
+          </div>
+          <div class="mb-3">
+            <label for="role" class="form-label">Rol</label>
+            <select class="form-select" id="role" name="role" required>
+              <option value="cliente">Cliente</option>
+              <option value="administrador">Administrador</option>
+            </select>
+          </div>
+          <div class="mb-3 position-relative">
+            <label for="password" class="form-label">Contraseña</label>
+            <div class="input-group">
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Contraseña"
+                required
+              />
+              <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
+                <i class="bi bi-eye-slash-fill"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="submitButton">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle + nuestro JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/users.js"></script>
+</body>
+</html>

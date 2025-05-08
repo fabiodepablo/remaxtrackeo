@@ -1,0 +1,139 @@
+/* -------------- Variables de color -------------- */
+:root {
+  --primary: #0056b3;
+  --primary-hover: #004494;
+  --secondary: #6c757d;
+  --bg-light: #f8f9fa;
+  --text-dark: #343a40;
+}
+
+/* -------------- Reset y base -------------- */
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+}
+
+/* -------------- Navbar -------------- */
+.navbar {
+  background-color: var(--primary);
+}
+.navbar .navbar-brand,
+.navbar .nav-link {
+  color: #fff !important;
+}
+.navbar .nav-link:hover {
+  color: var(--bg-light) !important;
+}
+
+/* -------------- Cards -------------- */
+.card {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+}
+
+/* -------------- Tables -------------- */
+.table-custom {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+}
+.table-custom th {
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+}
+.table-custom td,
+.table-custom th {
+  vertical-align: middle;
+}
+.table-custom tbody tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+/* -------------- Buttons -------------- */
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+/* -------------- Forms -------------- */
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0,86,179,0.25);
+  border-color: var(--primary);
+}
+
+/* ========== ESTILOS ESPECÍFICOS PARA LOGIN ========== */
+
+/* Fondo degradado en toda la página */
+body.login-page {
+  background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
+  color: #fff;
+}
+
+/* Animación fade-in para la card */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card de login */
+.login-card {
+  border: none;
+  border-radius: 1rem;
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out both;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Inputs con espacio para icono */
+.login-card .form-control {
+  border-radius: 0.5rem;
+  padding-left: 2.5rem;
+}
+
+/* Estilo al enfocar inputs */
+.login-card .form-control:focus {
+  border-color: #ff8c00;
+  box-shadow: 0 0 0 0.2rem rgba(255,140,0,0.25);
+}
+
+/* Iconos dentro de los inputs */
+.login-card .input-group-text,
+.login-card .input-group-text i {
+  background: transparent;
+  border: none;
+  color: #ff8c00;
+  font-size: 1.2rem;
+}
+
+/* Botón degradado y feedback hover */
+.login-card .btn-primary {
+  background: linear-gradient(90deg, #ff8c00, #ffc100);
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.login-card .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Objetivo</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="/dashboard.html">Inicio</a></li>
+      <li><a href="/objectives.html">Objetivos</a></li>
+    </ul>
+  </nav>
+
+  <h2>Editar Objetivo</h2>
+  <form id="objForm">
+    <!-- misma estructura que create, inputs con mismos IDs/NAMES -->
+    <div class="form-group">
+      <label for="type">Tipo:</label>
+      <select id="type" name="type" required>
+        <option value="anual">Anual</option>
+        <option value="mensual">Mensual</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="year">Año:</label>
+      <input type="number" id="year" name="year" min="2024" required>
+    </div>
+    <div class="form-group" id="monthGroup" style="display:none">
+      <label for="month">Mes:</label>
+      <select id="month" name="month">
+        <option value="1">Enero</option>
+        <option value="2">Febrero</option>
+        <option value="3">Marzo</option>
+        <option value="4">Abril</option>
+        <option value="5">Mayo</option>
+        <option value="6">Junio</option>
+        <option value="7">Julio</option>
+        <option value="8">Agosto</option>
+        <option value="9">Septiembre</option>
+        <option value="10">Octubre</option>
+        <option value="11">Noviembre</option>
+        <option value="12">Diciembre</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="captacionExclusiva">Captación Exclusiva:</label>
+      <input type="number" id="captacionExclusiva" name="captacionExclusiva" required>
+    </div>
+    <div class="form-group">
+      <label for="objetivoAnual">Objetivo Anual ($):</label>
+      <input type="number" id="objetivoAnual" name="objetivoAnual" required>
+    </div>
+    <div class="form-group">
+      <label for="premioConvencion">Premio Convención ($):</label>
+      <input type="number" id="premioConvencion" name="premioConvencion" required>
+    </div>
+    <div class="form-group">
+      <label for="comisionPromedioTransaccion">Comisión Promedio Transacción ($):</label>
+      <input type="number" id="comisionPromedioTransaccion" name="comisionPromedioTransaccion" required>
+    </div>
+    <div class="form-group">
+      <label for="sumaPrelistings">Suma Prelistings x Transacción:</label>
+      <input type="number" id="sumaPrelistings" name="sumaPrelistings" required>
+    </div>
+
+    <button type="submit">Guardar cambios</button>
+    <p id="message"></p>
+  </form>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(location.search);
+      const id = params.get('id');
+      const form = document.getElementById('objForm');
+      const typeEl = form.type;
+      const monthGroup = document.getElementById('monthGroup');
+      const msg = document.getElementById('message');
+
+      // toggle mes
+      typeEl.addEventListener('change', () => {
+        monthGroup.style.display = typeEl.value === 'mensual' ? 'flex' : 'none';
+      });
+
+      // cargar datos
+      const o = await (await fetch(`/api/objectives/${id}`)).json();
+      typeEl.value = o.type; typeEl.dispatchEvent(new Event('change'));
+      form.year.value = o.year;
+      if (o.type === 'mensual') form.month.value = o.month;
+      form.captacionExclusiva.value = o.captacionExclusiva;
+      form.objetivoAnual.value = o.objetivoAnual;
+      form.premioConvencion.value = o.premioConvencion;
+      form.comisionPromedioTransaccion.value = o.comisionPromedioTransaccion;
+      form.sumaPrelistings.value = o.sumaPrelistings;
+
+      // envío
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(form));
+        const res = await fetch(`/api/objectives/${id}`, {
+          method: 'PUT',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(data)
+        });
+        if (res.ok) {
+          msg.style.color = 'green';
+          msg.textContent = 'Objetivo actualizado.';
+        } else {
+          msg.style.color = 'red';
+          msg.textContent = (await res.json()).error || 'Error al actualizar.';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

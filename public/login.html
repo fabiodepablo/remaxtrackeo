@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mi App – Iniciar Sesión</title>
+
+  <!-- Montserrat, igual que RE/MAX -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Bootstrap & Icons -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --rmax-blue:  #0058a3;
+      --rmax-red:   #ED1C24;
+      --rmax-white: #FFFFFF;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--rmax-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-card {
+      background: var(--rmax-white);
+      border-radius: 0.75rem;
+      width: 360px;
+      padding: 2rem;
+      box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+      border-top: 0.5rem solid var(--rmax-red);
+    }
+    .login-card h2 {
+      color: var(--rmax-blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Ajustes de floating labels e inputs */
+    .form-floating .form-control {
+      border: 2px solid var(--rmax-blue);
+      border-radius: 0.5rem;
+      background: var(--rmax-white);
+      /* Centrado vertical: altura fija y padding ajustado */
+      height: 3.5rem;
+      padding: 1rem 1rem 0.25rem 3rem; /* top, right, bottom, left */
+      line-height: 1.25;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .form-floating .form-control:focus {
+      border-color: var(--rmax-red);
+      box-shadow: 0 0 0.25rem var(--rmax-red);
+      outline: none;
+    }
+    .form-floating > label {
+      padding-left: 1rem;
+    }
+
+    /* Iconos dentro de los campos */
+    .form-floating .bi {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--rmax-blue);
+      font-size: 1.2rem;
+    }
+
+    .show-pass {
+      position: absolute;
+      top: 50%; right: 1rem;
+      transform: translateY(-50%);
+      color: var(--rmax-blue);
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .form-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1rem 0;
+      font-size: 0.875rem;
+    }
+    .form-footer a {
+      color: var(--rmax-blue);
+      text-decoration: none;
+    }
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .btn-login {
+      width: 100%;
+      background: var(--rmax-red);
+      border: none;
+      color: var(--rmax-white);
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-login:hover {
+      background: var(--rmax-blue);
+      transform: translateY(-2px);
+    }
+
+    /* Mensaje de error */
+    #error {
+      display: none;
+      color: var(--rmax-red);
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <h2>Iniciar Sesión</h2>
+    <div id="error">Credenciales inválidas</div>
+    <form action="/login" method="POST" novalidate>
+      <!-- Usuario -->
+      <div class="form-floating mb-3 position-relative">
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          name="username"
+          placeholder="Usuario"
+          required
+        />
+        <label for="username">Usuario</label>
+        <i class="bi bi-person-fill"></i>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-floating mb-3 position-relative">
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          placeholder="Contraseña"
+          required
+        />
+        <label for="password">Contraseña</label>
+        <i class="bi bi-lock-fill"></i>
+        <span class="show-pass" id="togglePassword">
+          <i class="bi bi-eye-fill"></i>
+        </span>
+      </div>
+
+      <!-- Recordarme / Olvidé -->
+      <div class="form-footer">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="rememberMe" name="remember" />
+          <label class="form-check-label" for="rememberMe">Recordarme</label>
+        </div>
+        <a href="/forgot-password.html">Olvidé contraseña?</a>
+      </div>
+
+      <!-- Botón -->
+      <button type="submit" class="btn-login">Ingresar</button>
+    </form>
+  </div>
+
+  <script>
+    // Toggle contraseña
+    const pwd = document.getElementById('password');
+    const toggle = document.getElementById('togglePassword');
+    toggle.addEventListener('click', () => {
+      const type = pwd.type === 'password' ? 'text' : 'password';
+      pwd.type = type;
+      toggle.innerHTML = type === 'password'
+        ? '<i class="bi bi-eye-fill"></i>'
+        : '<i class="bi bi-eye-slash-fill"></i>';
+    });
+    // Mostrar error si viene ?error=1
+    if (new URLSearchParams(location.search).get('error')) {
+      document.getElementById('error').style.display = 'block';
+    }
+  </script>
+
+  <!-- Bootstrap Bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+  ></script>
+</body>
+</html>
